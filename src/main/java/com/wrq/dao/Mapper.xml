@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hq.dao.CompanyDAO">
+	<insert id="addCompany">
+		insert into company(name,`time`,tid)
+		values(#{name},#{time},#{moneyType.id})
+	</insert>
+	<select id="list" resultType="map">
+		SELECT company.*,moneyType.name as tname FROM company LEFT JOIN moneyType ON company.tid=moneyType.id
+		<where>
+			<if test="mohu1 !=null and mohu1!=''">
+				and company.name like concat('%',#{mohu1},'%')
+			</if>
+			<if test="mohu2!=null and mohu2!=''">
+				and time &gt;= #{mohu2}
+			</if>
+			<if test="mohu3!=null and mohu3!=''">
+				and time &lt;=#{mohu3}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getCompanyInfo" resultType="map">
+		SELECT company.*,moneyType.name as tname FROM company LEFT JOIN moneyType ON company.tid=moneyType.id
+		where company.id=#{id}
+	</select>
+</mapper>	
